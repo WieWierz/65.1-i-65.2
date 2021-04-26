@@ -6,9 +6,7 @@ using namespace std;
 
 class licz{
 	ifstream plik1;
-	ofstream plik2;
 	ifstream plik3;
-	ofstream plik4;
 	
 	public:
 		void jeden();
@@ -21,7 +19,6 @@ void licz::jeden() {
  	double licznik, mianownik,min, mlicznik, mmianownik;
  	
  	plik1.open("dane_ulamki.txt");
-	plik2.open("wynik.txt");
 		
 	if(plik1.good()) {
 		plik1>>licznik;
@@ -44,50 +41,57 @@ void licz::jeden() {
 				}
 			}
 		}
-		cout<<"Dziala!";
-		plik2<<mlicznik<<","<<mmianownik;
+		cout<<mlicznik<<","<<mmianownik;
 	}
 	plik1.close();
-	plik2.close();
 }
 
 void licz::dwa(){
 	
 	plik3.open("dane_ulamki.txt");
-	plik4.open("wynik2.txt");
 	
-	vector <int> liczby1;
-	vector <int> liczby2;
- 	int l1, l2;
- 	int il=0;
+	int licznik, mianownik;
+	
+	vector <int> rozklad(int);
+	void skracalne(vector <int>, vector<int>);
+	
+	vector <int> czynniki_licznika;
+	vector <int> czynniki_mianownika;
+ 	int suma_licznikow=0;
 	if(plik3.good()) {
 		while(!plik3.eof()) {
-			plik3>>l1;
-			liczby1 = r(l1);
-			plik3>>l2;
-			czy2 = r(l2);
-			for (int i=2; i<=l; i++) {
+			plik3>>licznik;
+			czynniki_licznika = rozklad(licznik);
+			plik3>>mianownik;
+			czynniki_mianownika = rozklad(mianownik);	
+			skracalne(czynniki_licznika, czynniki_mianownika);
+			suma_licznikow += licznik;
+		}
+	
+	
+		for (int i=2; i<=liczba; i++) {
 	   		while (liczba%i == 0) {
 	        	liczba/=i;
-	        	czy.push_back(i);
+	        	rozklad.push_back(i);
 	    	}
-	 	}	
-			if(nieskracalne(liczby1, liczby2)) {
-				il++;
+	 	}
+	 	
+	 	if(czynniki_licznika[i]==czynniki_mianownika[j] && czynniki_mianownika[j]!=0) {
+				licznik/=czynniki_licznika[i];
+				mianownik/=czynniki_mianownika[j];
+				czynniki_licznika[i]=0;
+				czynniki_mianownika[j]=0;
 			}
 		}
-		plik4<<il;
-	}
-	
-	plik3.close();
-	plik4.close();
+		cout<<suma_licznikow;
+		}
 }
 
 int main(int argc, char** argv) {
 	
 	licz l;
 	l.jeden();
-//	l.dwa();
+	l.dwa();
 	
 	return 0;
 }
